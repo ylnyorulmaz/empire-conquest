@@ -1,0 +1,120 @@
+{
+  "name": "TestVillage",
+  "coordinates": [
+    0,
+    0
+  ],
+  "resources": {
+    "food": 900,
+    "wood": 400,
+    "stone": 150,
+    "gold": 80
+  },
+  "resource_production": {
+    "food": 1000,
+    "wood": 500,
+    "stone": 200,
+    "gold": 100
+  },
+  "last_resource_update": 1788933388,
+  "population": 0,
+  "max_population": 20,
+  "buildings": {
+    "farm": {
+      "building_type": "farm",
+      "level": 1,
+      "is_building": false,
+      "build_finish_time": 0
+    },
+    "barracks": {
+      "building_type": "barracks",
+      "level": 1,
+      "is_building": false,
+      "build_finish_time": 0
+    },
+    "archery_range": {
+      "building_type": "archery_range",
+      "level": 0,
+      "is_building": false,
+      "build_finish_time": 0
+    },
+    "stable": {
+      "building_type": "stable",
+      "level": 0,
+      "is_building": false,
+      "build_finish_time": 0
+    },
+    "blacksmith": {
+      "building_type": "blacksmith",
+      "level": 0,
+      "is_building": false,
+      "build_finish_time": 0
+    },
+    "tower": {
+      "building_type": "tower",
+      "level": 0,
+      "is_building": false,
+      "build_finish_time": 0
+    },
+    "moat": {
+      "building_type": "moat",
+      "level": 0,
+      "is_building": false,
+      "build_finish_time": 0
+    }
+  },
+  "army": {
+    "peasant": {
+      "unit_type": "peasant",
+      "count": 0,
+      "attack_bonus": 0,
+      "defense_bonus": 0,
+      "total_attack": 2,
+      "total_defense": 4,
+      "total_loot_capacity": 0,
+      "food_consumption_per_hour": 0
+    },
+    "warrior": {
+      "unit_type": "warrior",
+      "count": 0,
+      "attack_bonus": 0,
+      "defense_bonus": 0,
+      "total_attack": 4,
+      "total_defense": 6,
+      "total_loot_capacity": 0,
+      "food_consumption_per_hour": 0
+    },
+    "archer": {
+      "unit_type": "archer",
+      "count": 0,
+      "attack_bonus": 0,
+      "defense_bonus": 0,
+      "total_attack": 8,
+      "total_defense": 3,
+      "total_loot_capacity": 0,
+      "food_consumption_per_hour": 0
+    },
+    "pikeman": {
+      "unit_type": "pikeman",
+      "count": 0,
+      "attack_bonus": 0,
+      "defense_bonus": 0,
+      "total_attack": 6,
+      "total_defense": 8,
+      "total_loot_capacity": 0,
+      "food_consumption_per_hour": 0
+    },
+    "knight": {
+      "unit_type": "knight",
+      "count": 0,
+      "attack_bonus": 0,
+      "defense_bonus": 0,
+      "total_attack": 12,
+      "total_defense": 12,
+      "total_loot_capacity": 0,
+      "food_consumption_per_hour": 0
+    }
+  },
+  "attack_level": 0,
+  "defense_level": 0
+}

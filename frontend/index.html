@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empire Conquest - Medieval Strategy Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>⚔️ Empire Conquest</h1>
+                <span class="subtitle">Medieval Strategy</span>
+            </div>
+            <div class="resources-bar" id="resources-bar">
+                <div class="resource"><span class="icon">🌾</span><span id="food">0</span></div>
+                <div class="resource"><span class="icon">🪵</span><span id="wood">0</span></div>
+                <div class="resource"><span class="icon">🪨</span><span id="stone">0</span></div>
+                <div class="resource"><span class="icon">💰</span><span id="gold">0</span></div>
+                <div class="resource"><span class="icon">👥</span><span id="population">0</span>/<span id="max-population">0</span></div>
+            </div>
+            <div class="header-actions">
+                <button id="btn-tick" class="btn btn-primary">⏱️ Tick</button>
+                <button id="btn-save" class="btn btn-secondary">💾 Save</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Left Sidebar: Buildings -->
+            <aside class="sidebar sidebar-buildings">
+                <h2>🏗️ Buildings</h2>
+                <div class="building-categories">
+                    <button class="category-btn active" data-category="resource">🌾 Resource</button>
+                    <button class="category-btn" data-category="military">⚔️ Military</button>
+                    <button class="category-btn" data-category="upgrade">⚒️ Upgrade</button>
+                    <button class="category-btn" data-category="defense">🛡️ Defense</button>
+                </div>
+                <div id="buildings-list" class="buildings-list"></div>
+            </aside>
+
+            <!-- Center: Village Overview -->
+            <section class="village-view">
+                <div class="village-header">
+                    <h2 id="village-name">My Village</h2>
+                    <div class="village-coords" id="village-coords">(0, 0)</div>
+                </div>
+                
+                <div class="village-scene" id="village-scene">
+                    <div class="building-slots" id="building-slots"></div>
+                </div>
+
+                <!-- Army Summary -->
+                <div class="army-summary">
+                    <h3>⚔️ Army</h3>
+                    <div class="army-stats">
+                        <div class="stat"><span class="label">Attack:</span><span id="total-attack">0</span></div>
+                        <div class="stat"><span class="label">Defense:</span><span id="total-defense">0</span></div>
+                        <div class="stat"><span class="label">Loot Cap:</span><span id="total-loot">0</span></div>
+                        <div class="stat"><span class="label">Population:</span><span id="army-pop">0</span></div>
+                    </div>
+                    <div id="army-units" class="army-units"></div>
+                </div>
+            </section>
+
+            <!-- Right Sidebar: Units & Actions -->
+            <aside class="sidebar sidebar-units">
+                <h2>🎯 Train Units</h2>
+                <div id="units-list" class="units-list"></div>
+                
+                <hr class="divider">
+                
+                <h2>🌍 World Map</h2>
+                <button id="btn-map" class="btn btn-full">View Map</button>
+                
+                <hr class="divider">
+                
+                <h2>⚔️ Attack</h2>
+                <div class="attack-form">
+                    <input type="text" id="attack-target" placeholder="Target village name or coords" class="input">
+                    <button id="btn-attack" class="btn btn-danger btn-full">Launch Attack</button>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Modals -->
+        <div id="modal-map" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🌍 World Map</h2>
+                    <button class="modal-close" id="close-map">&times;</button>
+                </div>
+                <div id="map-content"></div>
+            </div>
+        </div>
+
+        <div id="modal-building" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-building-title">Building Details</h2>
+                    <button class="modal-close" id="close-building">&times;</button>
+                </div>
+                <div id="modal-building-content"></div>
+            </div>
+        </div>
+
+        <div id="modal-attack-result" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚔️ Battle Result</h2>
+                    <button class="modal-close" id="close-attack-result">&times;</button>
+                </div>
+                <div id="attack-result-content"></div>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div id="notifications" class="notifications"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
