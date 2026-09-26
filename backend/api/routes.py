@@ -17,8 +17,9 @@ from models.game_state import GameState, Village, Resources
 from models.units import UnitType, UNIT_DEFINITIONS
 from models.buildings import BuildingType, BUILDING_DEFINITIONS
 
-# Initialize game state
-game_state = GameState(data_dir="../data")
+# Initialize game state (absolute path so Render/cwd changes do not break saves)
+_data_dir = Path(__file__).resolve().parent.parent.parent / "data"
+game_state = GameState(data_dir=str(_data_dir))
 
 app = FastAPI(title="Empire Conquest API")
 
@@ -44,6 +45,10 @@ class TrainRequest(BaseModel):
 
 class AttackRequest(BaseModel):
     target_village: str  # target village name or coordinates
+
+
+class NewGameRequest(BaseModel):
+    village_name: str = "My Village"
 
 
 class VillageResponse(BaseModel):
@@ -78,9 +83,9 @@ async def get_state():
 
 
 @app.post("/new-game")
-async def new_game(village_name: str = "My Village"):
+async def new_game(request: NewGameRequest = NewGameRequest()):
     """Create a new game"""
-    village = game_state.new_game(village_name)
+    village = game_state.new_game(request.village_name)
     return village.to_dict()
 
 

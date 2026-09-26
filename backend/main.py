@@ -28,18 +28,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API routes
-app.include_router(routes.app.router)
-
-# Serve frontend static files
-frontend_path = Path(__file__).parent.parent / "frontend"
-if frontend_path.exists():
-    app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
-
-
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "game": "Empire Conquest"}
+
+
+# Include API routes under /api (matches frontend API_BASE)
+app.include_router(routes.app.router, prefix="/api")
+
+# Serve frontend static files (must be last — catch-all)
+frontend_path = Path(__file__).parent.parent / "frontend"
+if frontend_path.exists():
+    app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
 
 
 if __name__ == "__main__":
