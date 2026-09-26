@@ -5,6 +5,17 @@
 
 const API_BASE = '/api';
 
+/** Building type ids — must match backend BuildingType enum values */
+const BuildingType = {
+    FARM: 'farm',
+    BARRACKS: 'barracks',
+    ARCHERY_RANGE: 'archery_range',
+    STABLE: 'stable',
+    BLACKSMITH: 'blacksmith',
+    TOWER: 'tower',
+    MOAT: 'moat',
+};
+
 // State
 let state = {
     village: null,
@@ -155,9 +166,29 @@ async function loadState() {
         state.village = await api('/state');
         renderAll();
     } catch (e) {
-        // No active game, show new game prompt
-        showNewGamePrompt();
+        await startNewGame('My Village');
     }
+}
+
+function villageAttackPower(v) {
+    return Object.values(v.army || {}).reduce(
+        (sum, unit) => sum + (unit.total_attack || 0) * (unit.count || 0),
+        0
+    );
+}
+
+function villageDefensePower(v) {
+    return Object.values(v.army || {}).reduce(
+        (sum, unit) => sum + (unit.total_defense || 0) * (unit.count || 0),
+        0
+    );
+}
+
+function villageLootCapacity(v) {
+    return Object.values(v.army || {}).reduce(
+        (sum, unit) => sum + (unit.total_loot_capacity || 0),
+        0
+    );
 }
 
 // Rendering
@@ -257,9 +288,9 @@ function renderArmy() {
     if (!state.village) return;
 
     // Update summary stats
-    elements.totalAttack.textContent = formatNumber(state.village.getTotalAttackPower());
-    elements.totalDefense.textContent = formatNumber(state.village.getTotalDefensePower());
-    elements.totalLoot.textContent = formatNumber(state.village.getTotalLootCapacity());
+    elements.totalAttack.textContent = formatNumber(villageAttackPower(state.village));
+    elements.totalDefense.textContent = formatNumber(villageDefensePower(state.village));
+    elements.totalLoot.textContent = formatNumber(villageLootCapacity(state.village));
 
     let armyPop = 0;
     elements.armyUnits.innerHTML = '';
@@ -342,11 +373,11 @@ function openBuildingModal(btype) {
         // Prerequisites
         if (Object.keys(defn.prerequisite_buildings).length > 0) {
             content += '<div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);"><strong>Requires:</strong><br>';
-            Object.entries(defn.prerequisite_buildings).forEach(([b, lvl]) => {
-                const reqDef = state.buildings[BuildingType[b]];
-                const reqBuilding = state.village.buildings[BuildingType[b]];
+            Object.entries(defn.prerequisite_buildings).forEach(([reqId, lvl]) => {
+                const reqDef = state.buildings[reqId];
+                const reqBuilding = state.village.buildings[reqId];
                 const met = reqBuilding && reqBuilding.level >= lvl;
-                content += `<span style="color: ${met ? 'var(--accent-green)' : 'var(--accent-red)'}">${reqDef?.name || b} Lv.${lvl} ${met ? '✓' : '✗'}</span><br>`;
+                content += `<span style="color: ${met ? 'var(--accent-green)' : 'var(--accent-red)'}">${reqDef?.name || reqId} Lv.${lvl} ${met ? '✓' : '✗'}</span><br>`;
             });
             content += '</div>';
         }
@@ -568,7 +599,7 @@ function canBuild(btype) {
     // Check prerequisites
     const defn = state.buildings[btype];
     for (const [reqType, minLevel] of Object.entries(defn.prerequisite_buildings)) {
-        const reqBuilding = state.village.buildings[BuildingType[reqType]];
+        const reqBuilding = state.village.buildings[reqType];
         if (!reqBuilding || reqBuilding.level < minLevel) return false;
     }
 
@@ -661,14 +692,21 @@ function showNotification(message, type = 'info') {
 function showNewGamePrompt() {
     const name = prompt('Enter your village name to start a new game:', 'My Village');
     if (name) {
-        api('/new-game', {
+        startNewGame(name);
+    }
+}
+
+async function startNewGame(name) {
+    try {
+        const village = await api('/new-game', {
             method: 'POST',
-            body: JSON.stringify({ village_name: name })
-        }).then(village => {
-            state.village = village;
-            renderAll();
-            showNotification('New game started!', 'success');
-        }).catch(e => showNotification(e.message, 'error'));
+            body: JSON.stringify({ village_name: name }),
+        });
+        state.village = village;
+        renderAll();
+        showNotification('New game started!', 'success');
+    } catch (e) {
+        showNotification(e.message, 'error');
     }
 }
 

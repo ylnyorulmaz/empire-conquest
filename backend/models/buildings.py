@@ -221,11 +221,30 @@ class Building:
         return self.level < self.definition.max_level and not self.is_building
     
     def to_dict(self) -> dict:
+        cost = self.next_level_cost
+        effects = self.current_effects
         return {
             "building_type": self.building_type.value,
             "level": self.level,
             "is_building": self.is_building,
             "build_finish_time": self.build_finish_time,
+            "next_level_cost": {
+                "food": cost.food,
+                "wood": cost.wood,
+                "stone": cost.stone,
+                "gold": cost.gold,
+            },
+            "next_level_time": self.next_level_time,
+            "current_effects": {
+                "food_production": effects.food_production,
+                "population_capacity": effects.population_capacity,
+                "training_speed_bonus": effects.training_speed_bonus,
+                "unit_attack_bonus": effects.unit_attack_bonus,
+                "unit_defense_bonus": effects.unit_defense_bonus,
+                "ranged_defense": effects.ranged_defense,
+                "melee_damage_reduction": effects.melee_damage_reduction,
+                "recruitment_slots": effects.recruitment_slots,
+            },
         }
     
     @classmethod
